@@ -1,5 +1,8 @@
 FROM python:3.11-slim
-
+# Set default environment variables
+ENV OVERSEERR_MCP_HOST=0.0.0.0
+ENV OVERSEERR_MCP_PORT=3000
+ENV OVERSEERR_MCP_TRANSPORT=sse
 # Set working directory
 WORKDIR /app
 
@@ -30,17 +33,9 @@ RUN mkdir -p /app/logs && chown -R mcpuser:mcpuser /app
 # Switch to non-root user
 USER mcpuser
 
-# Expose port
-EXPOSE 6975
-
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:6975/health || exit 1
-
-# Set default environment variables
-ENV OVERSEERR_MCP_HOST=0.0.0.0
-ENV OVERSEERR_MCP_PORT=6975
-ENV OVERSEERR_MCP_TRANSPORT=sse
+    CMD curl -f http://localhost:$MCP_PORT/health || exit 1
 
 # Run the server via entrypoint
 CMD ["./entrypoint.sh"] 
