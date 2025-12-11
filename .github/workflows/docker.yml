@@ -14,7 +14,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: mcp-overseerr
+  IMAGE_NAME: overseerr-mcp
 
 jobs:
   build-and-push:
